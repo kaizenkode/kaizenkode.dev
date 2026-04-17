@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>kaizenkode — Learn to Code by Building Things</title>
+  <meta name="description" content="kaizenkode is a San Francisco-based education company. We help beginners learn to code by building real projects from day one." />
+  <style>
+    /* ── Reset & tokens ───────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:       #2a2018;   /* deep walnut */
+      --mid:       #5c4f40;   /* warm driftwood */
+      --faint:     #8c7d6c;   /* worn cedar */
+      --rule:      #d4cbbe;   /* dry bark */
+      --bg:        #f7f4ee;   /* rice paper */
+      --bg-alt:    #ede8df;   /* worn linen */
+      --dark:      #1a1510;   /* darkest heartwood */
+      --accent:    #4a7c65;   /* jade */
+      --accent-dk: #346050;   /* deep jade */
+      --accent-lt: #d6e8df;   /* pale jade wash */
+      --code-bg:   #e8e3d8;   /* aged paper */
+      --radius:    8px;
+      --max:       900px;
+      --font-body: "Georgia", "Times New Roman", serif;
+      --font-ui:   system-ui, -apple-system, "Segoe UI", sans-serif;
+      --font-mono: "Courier New", Courier, monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.7;
+      font-size: 1.0625rem;
+    }
+
+    /* ── Layout helpers ──────────────────────────────────────────── */
+    .container { max-width: var(--max); margin: 0 auto; padding: 0 1.5rem; }
+    section { padding: 5rem 0; }
+    section:nth-of-type(even) { background: var(--bg-alt); }
+
+    /* ── Nav ─────────────────────────────────────────────────────── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(247,244,238,0.96);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--rule);
+      padding: 0.875rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: var(--font-ui);
+      font-weight: 700; font-size: 1.1rem;
+      color: var(--ink); text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+    .nav-logo span { color: var(--accent); }
+    nav ul {
+      list-style: none;
+      display: flex; gap: 2rem;
+    }
+    nav a {
+      font-family: var(--font-ui);
+      font-size: 0.875rem; font-weight: 500;
+      color: var(--mid); text-decoration: none;
+      transition: color 0.15s;
+    }
+    nav a:hover { color: var(--accent); }
+
+    /* ── Hero ────────────────────────────────────────────────────── */
+    #hero {
+      background: var(--bg);
+      padding: 7rem 0 5rem;
+      border-bottom: 1px solid var(--rule);
+    }
+    #hero .container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    .hero-text .kicker {
+      font-family: var(--font-ui);
+      font-size: 0.75rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--accent-dk);
+      background: var(--accent-lt);
+      display: inline-block;
+      padding: 0.25em 0.75em;
+      border-radius: 999px;
+      margin-bottom: 1.25rem;
+    }
+    .hero-text h1 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.25rem;
+    }
+    .hero-text p {
+      font-size: 1.125rem;
+      color: var(--mid);
+      margin-bottom: 2rem;
+      max-width: 42ch;
+    }
+    .btn {
+      display: inline-block;
+      font-family: var(--font-ui);
+      font-size: 0.9375rem; font-weight: 600;
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--radius);
+      text-decoration: none;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .btn:active { transform: translateY(1px); }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+    .btn-primary:hover { background: var(--accent-dk); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--mid);
+      border: 1.5px solid var(--rule);
+      margin-left: 0.75rem;
+    }
+    .btn-ghost:hover { border-color: var(--mid); color: var(--ink); }
+
+    .hero-book {
+      background: var(--bg-alt);
+      border: 1px solid var(--rule);
+      border-top: 4px solid var(--accent);
+      border-radius: 12px;
+      padding: 2.5rem 2rem;
+      font-family: var(--font-ui);
+    }
+    .book-badge {
+      font-size: 0.75rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+    .book-title {
+      font-family: var(--font-body);
+      font-size: 1.375rem;
+      font-weight: normal;
+      line-height: 1.3;
+      margin-bottom: 0.375rem;
+    }
+    .book-author {
+      font-size: 0.85rem;
+      color: var(--faint);
+      margin-bottom: 1.5rem;
+    }
+    .book-stats {
+      display: flex; gap: 1.5rem;
+      border-top: 1px solid var(--rule);
+      padding-top: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .stat-num {
+      font-size: 1.5rem; font-weight: 700;
+      color: var(--ink); display: block;
+      letter-spacing: -0.02em;
+    }
+    .stat-label { font-size: 0.78rem; color: var(--faint); }
+    .book-cta {
+      display: flex; gap: 0.75rem; flex-wrap: wrap;
+    }
+
+    /* ── Principles ───────────────────────────────────────────────── */
+    #principles h2 {
+      font-size: 1.875rem;
+      margin-bottom: 0.75rem;
+    }
+    #principles .lead {
+      font-size: 1.0625rem; color: var(--mid);
+      max-width: 60ch; margin-bottom: 3rem;
+    }
+    .principles-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+    .principle {
+      border-top: 3px solid var(--accent);
+      padding-top: 1.25rem;
+      background: var(--bg);
+      border-radius: 0 0 var(--radius) var(--radius);
+      padding: 1.25rem 1.25rem 1.5rem;
+    }
+    .principle h3 {
+      font-size: 1rem;
+      font-family: var(--font-ui);
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .principle p { font-size: 0.9375rem; color: var(--mid); }
+
+    /* ── Projects ─────────────────────────────────────────────────── */
+    #projects h2 { font-size: 1.875rem; margin-bottom: 0.75rem; }
+    #projects .lead {
+      font-size: 1.0625rem; color: var(--mid);
+      max-width: 60ch; margin-bottom: 2.5rem;
+    }
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .project-card {
+      background: var(--bg);
+      border: 1px solid var(--rule);
+      border-radius: var(--radius);
+      padding: 1rem 1.125rem;
+      font-family: var(--font-ui);
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .project-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 2px 12px rgba(74,124,101,0.10);
+    }
+    .project-card .ch {
+      font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--faint); margin-bottom: 0.25rem;
+    }
+    .project-card .name {
+      font-size: 0.9rem; font-weight: 600;
+      color: var(--ink);
+    }
+    .project-card .concept {
+      font-size: 0.78rem; color: var(--faint); margin-top: 0.25rem;
+    }
+    .projects-note {
+      font-family: var(--font-ui);
+      font-size: 0.875rem; color: var(--mid);
+    }
+    .projects-note a { color: var(--accent); text-decoration: none; }
+    .projects-note a:hover { text-decoration: underline; }
+
+    /* ── About ────────────────────────────────────────────────────── */
+    #about .container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    #about h2 { font-size: 1.875rem; margin-bottom: 1.25rem; }
+    #about p { color: var(--mid); margin-bottom: 1rem; }
+    #about p:last-child { margin-bottom: 0; }
+    .about-aside {
+      background: var(--bg);
+      border: 1px solid var(--rule);
+      border-left: 4px solid var(--accent);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 1.75rem 1.5rem;
+      font-family: var(--font-ui);
+    }
+    .about-aside .word { color: var(--ink); }
+    .about-aside .word {
+      font-size: 1.5rem; font-weight: 700;
+      letter-spacing: -0.02em; margin-bottom: 0.25rem;
+    }
+    .about-aside .def {
+      font-size: 0.85rem; color: var(--mid);
+      margin-bottom: 1.5rem; line-height: 1.5;
+    }
+
+    /* ── Connect ──────────────────────────────────────────────────── */
+    #connect {
+      background: var(--dark);
+      color: #e8e0d4;
+    }
+    #connect h2 { font-size: 1.875rem; margin-bottom: 0.75rem; color: #e8e0d4; }
+    #connect .lead {
+      color: #8a8070;
+      max-width: 55ch;
+      margin-bottom: 2.5rem;
+      font-size: 1.0625rem;
+    }
+    .connect-links {
+      display: flex; gap: 1rem; flex-wrap: wrap;
+    }
+    .btn-light {
+      background: rgba(74,124,101,0.15);   /* jade tint */
+      color: #a8c8b8;
+      border: 1px solid rgba(74,124,101,0.35);
+    }
+    .btn-light:hover {
+      background: rgba(74,124,101,0.28);
+      color: #c8e0d0;
+      border-color: rgba(74,124,101,0.55);
+    }
+
+    /* ── Footer ───────────────────────────────────────────────────── */
+    footer {
+      background: var(--dark);
+      border-top: 1px solid rgba(74,124,101,0.15);
+      padding: 1.5rem;
+      text-align: center;
+      font-family: var(--font-ui);
+      font-size: 0.8rem;
+      color: #5a5040;
+    }
+    footer a { color: #6a8070; text-decoration: none; }
+    footer a:hover { color: #8aaa98; }
+
+    /* ── Responsive ───────────────────────────────────────────────── */
+    @media (max-width: 700px) {
+      #hero .container,
+      #about .container { grid-template-columns: 1fr; gap: 2rem; }
+      .principles-grid { grid-template-columns: 1fr; }
+      nav ul { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Navigation ─────────────────────────────────────────────────── -->
+<nav>
+  <a class="nav-logo" href="#"><span>kaizen</span>kode</a>
+  <ul>
+    <li><a href="#principles">Philosophy</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="https://github.com/kaizenkode" target="_blank" rel="noopener">GitHub</a></li>
+  </ul>
+</nav>
+
+<!-- ── Hero ───────────────────────────────────────────────────────── -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-text">
+      <span class="kicker">San Francisco · Est. 2025</span>
+      <h1>Learn to code by building things that work.</h1>
+      <p>kaizenkode makes programming education accessible to everyone — through project-first curricula that take you from zero to a running program on page one.</p>
+      <div>
+        <a href="#projects" class="btn btn-primary">See the projects</a>
+        <a href="#about" class="btn btn-ghost">Our philosophy</a>
+      </div>
+    </div>
+
+    <div class="hero-book">
+      <div class="book-badge">Now Available</div>
+      <div class="book-title">Python Programming Projects<br>for Beginners</div>
+      <div class="book-author">by kaizenkode</div>
+      <div class="book-stats">
+        <div>
+          <span class="stat-num">20</span>
+          <span class="stat-label">complete projects</span>
+        </div>
+        <div>
+          <span class="stat-num">0</span>
+          <span class="stat-label">experience required</span>
+        </div>
+        <div>
+          <span class="stat-num">1</span>
+          <span class="stat-label">working program<br>by chapter 3</span>
+        </div>
+      </div>
+      <div class="book-cta">
+        <a href="https://github.com/kaizenkode/python-projects-for-beginners" class="btn btn-primary" target="_blank" rel="noopener">Free companion code</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Principles ─────────────────────────────────────────────────── -->
+<section id="principles">
+  <div class="container">
+    <h2>Why most beginner resources fail — and what we do differently.</h2>
+    <p class="lead">Most programming courses teach syntax first and building second. You learn what a loop is before you've had any reason to want one. We reverse that order.</p>
+    <div class="principles-grid">
+      <div class="principle">
+        <h3>Projects first</h3>
+        <p>Every chapter opens with a complete, runnable program. You understand the goal before you write the first line — so every concept you learn has an immediate job to do.</p>
+      </div>
+      <div class="principle">
+        <h3>Concepts in context</h3>
+        <p>New ideas are introduced when the project demands them, not when a curriculum schedule says so. The problem comes before the solution — always.</p>
+      </div>
+      <div class="principle">
+        <h3>Continuous improvement</h3>
+        <p>Our name is a daily reminder: progress is built from small, deliberate steps. No chapter assumes more than the last one taught. Every reader finishes with something to show.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Projects ───────────────────────────────────────────────────── -->
+<section id="projects">
+  <div class="container">
+    <h2>20 programs. One chapter each.</h2>
+    <p class="lead">Each project in <em>Python Programming Projects for Beginners</em> is complete, runnable, and introduces exactly the concepts you need to build it — nothing more.</p>
+    <div class="projects-grid">
+      <div class="project-card"><div class="ch">Ch 03</div><div class="name">Fortune Teller</div><div class="concept">lists · random · input</div></div>
+      <div class="project-card"><div class="ch">Ch 04</div><div class="name">Number Guessing Game</div><div class="concept">loops · conditionals</div></div>
+      <div class="project-card"><div class="ch">Ch 05</div><div class="name">Password Generator</div><div class="concept">string module · for loops</div></div>
+      <div class="project-card"><div class="ch">Ch 06</div><div class="name">Dice Rolling Simulator</div><div class="concept">functions · DRY · PEP 8</div></div>
+      <div class="project-card"><div class="ch">Ch 07</div><div class="name">Mad Libs Generator</div><div class="concept">f-strings · .strip()</div></div>
+      <div class="project-card"><div class="ch">Ch 08</div><div class="name">Rock Paper Scissors</div><div class="concept">score tracking · logic</div></div>
+      <div class="project-card"><div class="ch">Ch 09</div><div class="name">Quiz Game</div><div class="concept">dicts · len() · percentages</div></div>
+      <div class="project-card"><div class="ch">Ch 10</div><div class="name">Hangman</div><div class="concept">join() · continue</div></div>
+      <div class="project-card"><div class="ch">Ch 11</div><div class="name">Tic Tac Toe</div><div class="concept">2D lists · predicates</div></div>
+      <div class="project-card"><div class="ch">Ch 12</div><div class="name">To-Do List Manager</div><div class="concept">file I/O · try/except</div></div>
+      <div class="project-card"><div class="ch">Ch 13</div><div class="name">Contact Book</div><div class="concept">nested dicts · JSON</div></div>
+      <div class="project-card"><div class="ch">Ch 14</div><div class="name">Simple Chatbot</div><div class="concept">substring matching</div></div>
+      <div class="project-card"><div class="ch">Ch 15</div><div class="name">File Organizer</div><div class="concept">os · shutil · automation</div></div>
+      <div class="project-card"><div class="ch">Ch 16</div><div class="name">Random Story Generator</div><div class="concept">combinatorics</div></div>
+      <div class="project-card"><div class="ch">Ch 17</div><div class="name">Password Strength Checker</div><div class="concept">string methods · any()</div></div>
+      <div class="project-card"><div class="ch">Ch 18</div><div class="name">Encryption Tool</div><div class="concept">ord() · chr() · modulo</div></div>
+      <div class="project-card"><div class="ch">Ch 19</div><div class="name">URL Status Checker</div><div class="concept">requests · HTTP · exceptions</div></div>
+      <div class="project-card"><div class="ch">Ch 20</div><div class="name">Data Visualization</div><div class="concept">matplotlib · charts</div></div>
+      <div class="project-card"><div class="ch">Ch 21</div><div class="name">Capstone Project</div><div class="concept">design from scratch</div></div>
+    </div>
+    <p class="projects-note">All source code is free on GitHub — <a href="https://github.com/kaizenkode/python-projects-for-beginners" target="_blank" rel="noopener">github.com/kaizenkode/python-projects-for-beginners</a></p>
+  </div>
+</section>
+
+<!-- ── About ───────────────────────────────────────────────────────── -->
+<section id="about">
+  <div class="container">
+    <div>
+      <h2>About kaizenkode</h2>
+      <p>kaizenkode is an educational company based in San Francisco. We create curricula, books, and code resources with one goal: make the knowledge to build software accessible to anyone, regardless of background or prior experience.</p>
+      <p>We were built on a simple observation — that most people who try to learn programming don't fail because they lack ability. They fail because the materials they find assume the wrong starting point. We start from zero, every time, on purpose.</p>
+      <p>The name is a daily reminder of how we think about learning: <em>kaizen</em> — continuous improvement through small, deliberate steps. Every chapter builds on the last. Every program you finish is a step toward the next one. Progress compounds.</p>
+    </div>
+    <div>
+      <div class="about-aside">
+        <div class="word">kai·zen</div>
+        <div class="def"><em>noun, Japanese</em> — continuous improvement through small, deliberate steps. The belief that progress is built incrementally, not all at once — and that anyone who keeps showing up will get there.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Connect ─────────────────────────────────────────────────────── -->
+<section id="connect">
+  <div class="container">
+    <h2>Find us</h2>
+    <p class="lead">The companion code for every book we publish is free and open on GitHub. Come build something.</p>
+    <div class="connect-links">
+      <a href="https://github.com/kaizenkode" class="btn btn-light" target="_blank" rel="noopener">GitHub · kaizenkode</a>
+      <a href="https://github.com/kaizenkode/python-projects-for-beginners" class="btn btn-light" target="_blank" rel="noopener">Python Projects Repo</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ─────────────────────────────────────────────────────── -->
+<footer>
+  <p>© 2026 kaizenkode · San Francisco · <a href="https://github.com/kaizenkode">github.com/kaizenkode</a></p>
+</footer>
+
+</body>
+</html>
